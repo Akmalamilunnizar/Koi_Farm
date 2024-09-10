@@ -1,0 +1,22 @@
+<svg width="836" height="816" viewBox="0 0 836 816" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<circle cx="348" cy="348" r="348" stroke="url(#ps_0_1218_9003)" stroke-width="3" stroke-miterlimit="3.999327"/>
+<circle cx="448" cy="408" r="348" stroke="url(#ps_0_1218_9004)" stroke-width="3" stroke-miterlimit="3.999327"/>
+<circle cx="488" cy="468" r="348" stroke="url(#ps_0_1218_9005)" stroke-width="3" stroke-miterlimit="3.999327"/>
+<defs>
+<linearGradient id="ps_0_1218_9003" x1="696" y1="196.181" x2="277" y2="712" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1F1BCE"/>
+<stop offset="0.533" stop-color="#9B6CFF"/>
+<stop offset="1" stop-color="#97C7FF"/>
+</linearGradient>
+<linearGradient id="ps_0_1218_9004" x1="796" y1="256.181" x2="377" y2="772" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1F1BCE"/>
+<stop offset="0.533" stop-color="#9B6CFF"/>
+<stop offset="1" stop-color="#97C7FF"/>
+</linearGradient>
+<linearGradient id="ps_0_1218_9005" x1="836" y1="316.181" x2="417" y2="832" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1F1BCE"/>
+<stop offset="0.533" stop-color="#9B6CFF"/>
+<stop offset="1" stop-color="#97C7FF"/>
+</linearGradient>
+</defs>
+</svg>

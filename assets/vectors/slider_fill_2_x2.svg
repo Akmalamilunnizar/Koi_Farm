@@ -1,0 +1,20 @@
+<svg width="288" height="42" viewBox="0 0 288 42" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect  x="-0.157" y="12.683" width="258" height="16" rx="16" fill="#006FFD"/>
+<g filter="url(#filterI256_4862;147_1553;147_1512;147_1480)">
+<rect  x="247.843" y="0.683" width="40" height="40" rx="32" fill="#FFFFFF"/>
+<circle cx="267.967" cy="20.807" r="10" fill="#006FFD"/>
+</g>
+<defs>
+<filter id="filterI256_4862;147_1553;147_1512;147_1480" x="241.842773" y="-5.317383" width="32" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="0" operator="dilate" in="SourceAlpha" result="0dropshadow"/>
+<feOffset dx="-1" dy="2"/>
+<feGaussianBlur stdDeviation="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="0dropshadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="0dropshadow" result="shape"/>
+</filter>
+</defs>
+</svg>

@@ -1,0 +1,6 @@
+<svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<mask id="mask_0_i_240_6265;174_2276;126_901" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5.000302" y="0.556885" width="6.999727" height="11.49955">
+<path d="M18.548,0.996C19.15,1.582 19.15,2.532 18.548,3.117L9.361,12.056L18.548,20.995C19.15,21.581 19.15,22.531 18.548,23.117C17.946,23.702 16.97,23.702 16.368,23.117L5,12.056L16.368,0.996C16.97,0.41 17.946,0.41 18.548,0.996Z" clip-rule="evenodd" fill-rule="evenodd" transform="rotate(360 12 12.056)" fill="#006FFD"/>
+</mask>
+<rect  x="0" y="0.055" width="23.999" height="23.999" fill="#8F9098"/>
+</svg>
