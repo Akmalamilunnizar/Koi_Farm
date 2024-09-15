@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:koi_farm/pages/home/main_page.dart';
+import 'package:koi_farm/pages/monitoring/monitor_page.dart';
 // import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     MainFoodPage(),
     MainPage(),
     AccountPage(),
-    AccountPage(),
+    MonitorPage(),
   ];
 
   void onTapNav(int index) {
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
       MainFoodPage(),
       MainPage(),
       AccountPage(),
-      AccountPage(),
+      MonitorPage(),
     ];
   }
 
@@ -96,19 +97,19 @@ class _HomePageState extends State<HomePage> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.settings),
+        icon: Icon(CupertinoIcons.home),
         title: ("Settings"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.home),
+        icon: Icon(CupertinoIcons.profile_circled),
         title: ("Home"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.settings),
+        icon: Icon(CupertinoIcons.book),
         title: ("Settings"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,

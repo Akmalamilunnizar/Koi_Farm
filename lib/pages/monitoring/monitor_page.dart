@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koi_farm/utils/colors.dart';
 import 'package:koi_farm/utils/dimensions.dart';
 import 'package:koi_farm/utils/smart_device_box.dart';
+import 'package:koi_farm/widgets/parameter_item.dart';
+import 'package:lottie/lottie.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class MonitorPage extends StatefulWidget {
+  const MonitorPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<MonitorPage> createState() => _MonitorPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MonitorPageState extends State<MonitorPage> {
   // padding constants
   final double horizontalPadding = 40;
   final double verticalPadding = 25;
@@ -30,96 +33,187 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  final Shader linearGradient = const LinearGradient(
+    colors: <Color>[Color(0xffABCFF2), Color(0xff9AC6F3)],
+  ).createShader(const Rect.fromLTRB(0.0, 0.0, 200.0, 70.0));
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // custom app bar
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: horizontalPadding,
-                vertical: verticalPadding,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        titleSpacing: 0,
+        title: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          width: size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                child: Image.asset(
+                  "assets/image/menu.png",
+                  width: Dimensions.width30,
+                  height: Dimensions.height30,
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
                     "assets/image/menu.png",
-                    height: 45,
-                    color: Colors.grey[800],
+                    width: Dimensions.width30,
                   ),
-                  Icon(
-                    Icons.person,
-                    size: 45,
-                    color: Colors.grey[800],
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  // Dropdown not needed
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Tegalgede",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            ),
+            Text(
+              "Minggu, 8 Mei",
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 16.0,
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Container(
+              width: size.width,
+              height: 150,
+              decoration: BoxDecoration(
+                color: AppColors.mainColor,
+                borderRadius: BorderRadius.circular(Dimensions.radius15),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.mainColor.withOpacity(.5),
+                    offset: const Offset(0, 25),
+                    blurRadius: 10,
+                    spreadRadius: -12,
+                  ),
+                ],
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    top: -60,
+                    left: 0,
+                    //44:14 for dynamic image asset from web
+                    child: Lottie.asset(
+                      "assets/image/water.json",
+                      width: 150,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 30,
+                    left: 20,
+                    child: Text(
+                      "Keran Hidup",
+                      style: GoogleFonts.notoSansJp(fontSize: Dimensions.font20, color: Colors.white),
+                      
+                    ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            "38",
+                            style: TextStyle(
+                              fontSize: Dimensions.font65,
+                              fontWeight: FontWeight.bold,
+                              foreground: Paint()..shader = linearGradient,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "°C",
+                          style: TextStyle(
+                            fontSize: Dimensions.font26,
+                            fontWeight: FontWeight.bold,
+                            foreground: Paint()..shader = linearGradient,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-
-            SizedBox(
-              height: Dimensions.height15,
+            const SizedBox(
+              height: 50,
             ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Selamat Datang,",
-                    style: TextStyle(fontSize: 20, color: Colors.grey[700]),
+                  ParameterItem(
+                    text: "pH Air",
+                    value: "7.00",
+                    unit: 'pH',
+                    imageUrl: 'assets/image/ph-balance.png',
                   ),
-                  Text(
-                    "Koi Farm",
-                    style: GoogleFonts.bebasNeue(fontSize: 72),
+                  ParameterItem(
+                    text: 'Suhu Kolam',
+                    value: "38",
+                    unit: '°C',
+                    imageUrl: 'assets/image/thermometer.png',
+                  ),
+                  ParameterItem(
+                    text: 'DO Meter',
+                    value: "193.2",
+                    unit: '%',
+                    imageUrl: 'assets/image/dissolved-oxygen-monitor.png',
                   ),
                 ],
               ),
             ),
             SizedBox(height: Dimensions.height10,),
-
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Divider(
-                color: Colors.grey[400],
-                thickness: 1,
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Today', style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: Dimensions.font26,
+                ),),
+                Text('Next 7 Days', style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: Dimensions.font16,
+                  color: AppColors.mainColor
+                ),),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Text(
-                "Smart Devices",
-                style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    color: Colors.grey[800]
-                    ),
-              ),
-            ),
-
-//7:15
-            Expanded(
-              child: GridView.builder(
-                // physics: const NeverScrollableScrollPhysics(),
-                itemCount: mySmartDevices.length,
-                padding: const EdgeInsets.all(25),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 1 / 1.3),
-                itemBuilder: (context, index) {
-                  return SmartDeviceBox(
-                    smartDeviceName: mySmartDevices[index][0],
-                    iconPath: mySmartDevices[index][1],
-                    powerOn: mySmartDevices[index][2],
-                    onChanged: (value) => powerSwitchChanged(value, index),
-                  );
-                },
-              ),
-            )
+            SizedBox(height: Dimensions.height20,),
+            // Expanded(child: ListView.builder(itemBuilder: itemBuilder))
           ],
         ),
       ),
