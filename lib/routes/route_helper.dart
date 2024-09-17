@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:koi_farm/auth/sign_in_page.dart';
 import 'package:koi_farm/pages/home/home_page.dart';
@@ -8,6 +7,7 @@ class RouteHelper {
   static const String initial = "/";
   static const String splashPage = "/splash-page";
   static const String popularFood = "/popular-food";
+  static const String monitor_page = "/monitor-page";
   static const String recommendedFood = "/recommended-food";
   static const String signIn = "/sign-in";
   static const String cartPage = "/cart-page";

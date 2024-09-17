@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:koi_farm/pages/home/main_page.dart';
+import 'package:koi_farm/pages/monitoring/history_page.dart';
 import 'package:koi_farm/pages/monitoring/monitor_page.dart';
+import 'package:koi_farm/pages/ponds/pond_page.dart';
 // import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -21,9 +23,9 @@ class _HomePageState extends State<HomePage> {
 
   // late PersistentTabController _controller;
   List pages = [
-    MainFoodPage(),
+    PondPage(),
     MainPage(),
-    AccountPage(),
+    HistoryPage(),
     MonitorPage(),
   ];
 
@@ -81,9 +83,9 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _buildScreens() {
     return [
-      MainFoodPage(),
+      PondPage(),
       MainPage(),
-      AccountPage(),
+      HistoryPage(),
       MonitorPage(),
     ];
   }
