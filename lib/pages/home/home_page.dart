@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:koi_farm/pages/entity/koi_page.dart';
 import 'package:koi_farm/pages/home/main_page.dart';
-import 'package:koi_farm/pages/monitoring/history_page.dart';
-import 'package:koi_farm/pages/monitoring/monitor_page.dart';
-import 'package:koi_farm/pages/monitoring/tracking_fish.dart';
-import 'package:koi_farm/pages/ponds/pond_page.dart';
+import 'package:koi_farm/pages/detail/parameter_page.dart';
+import 'package:koi_farm/pages/detail/monitor_page.dart';
+import 'package:koi_farm/pages/detail/detail_koi.dart';
+import 'package:koi_farm/pages/entity/pond_page.dart';
 // import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -25,9 +26,9 @@ class _HomePageState extends State<HomePage> {
   // late PersistentTabController _controller;
   List pages = [
     PondPage(),
-    TrackingFish(),
-    HistoryPage(),
-    MonitorPage(),
+    DetailKoi(),
+    ParameterPage(),
+    AccountPage(),
   ];
 
   void onTapNav(int index) {
@@ -85,9 +86,9 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _buildScreens() {
     return [
       PondPage(),
-      TrackingFish(),
-      HistoryPage(),
-      MonitorPage(),
+      DetailKoi(),
+      ParameterPage(),
+      AccountPage(),
     ];
   }
 
@@ -100,20 +101,20 @@ class _HomePageState extends State<HomePage> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.home),
-        title: ("Settings"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.profile_circled),
-        title: ("Home"),
+        icon: Icon(CupertinoIcons.play_circle),
+        title: ("Koi"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.book),
-        title: ("Settings"),
+        title: ("Parameter Kolam"),
+        activeColorPrimary: CupertinoColors.activeBlue,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(CupertinoIcons.profile_circled),
+        title: ("Profile"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
