@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 import 'package:koi_farm/auth/sign_in_page.dart';
+import 'package:koi_farm/pages/detail/detail_koi.dart';
+import 'package:koi_farm/pages/detail/monitor_page.dart';
+import 'package:koi_farm/pages/detail/parameter_page.dart';
+import 'package:koi_farm/pages/entity/koi_page.dart';
 import 'package:koi_farm/pages/home/home_page.dart';
 import 'package:koi_farm/pages/splash/splash_page.dart';
 
@@ -7,7 +11,10 @@ class RouteHelper {
   static const String initial = "/";
   static const String splashPage = "/splash-page";
   static const String popularFood = "/popular-food";
-  static const String monitor_page = "/monitor-page";
+  static const String monitorPage = "/monitor-page";
+  static const String parameterPage = "/parameter-page";
+  static const String koiPage = "/koi-page";
+  static const String detailKoiPage = "/detail-koi-page";
   static const String recommendedFood = "/recommended-food";
   static const String signIn = "/sign-in";
   static const String cartPage = "/cart-page";
@@ -17,6 +24,10 @@ class RouteHelper {
 
   static String getSplashPage() => '$splashPage';
   static String getInitial() => '$initial';
+  static String getMonitorPage() => '$monitorPage';
+  static String getParameterPage() => '$parameterPage';
+  static String getKoiPage() => '$koiPage';
+  static String getDetailKoiPage() => '$detailKoiPage';
   static String getPopularFood(int pageId, String page) =>
       '$popularFood?pageId=$pageId&page=$page';
   static String getRecommendedFood(int pageId, String page) =>
@@ -41,6 +52,30 @@ class RouteHelper {
         name: signIn,
         page: () {
           return SignInPage();
+        },
+        transition: Transition.fade),
+    GetPage(
+        name: monitorPage,
+        page: () {
+          return MonitorPage();
+        },
+        transition: Transition.fade),
+    GetPage(
+        name: koiPage,
+        page: () {
+          return KoiPage();
+        },
+        transition: Transition.fade),
+    GetPage(
+        name: parameterPage,
+        page: () {
+          return ParameterPage();
+        },
+        transition: Transition.fade),
+    GetPage(
+        name: detailKoiPage,
+        page: () {
+          return DetailKoi();
         },
         transition: Transition.fade),
   ];
