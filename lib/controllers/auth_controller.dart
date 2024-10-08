@@ -2,7 +2,7 @@
 import 'package:get/get.dart';
 import 'package:koi_farm/models/response.model.dart';
 import 'package:koi_farm/models/signup_body_model.dart';
-import 'package:koi_farm/repository/auth_repo.dart';
+import 'package:koi_farm/data/repository/auth_repo.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;

@@ -1,8 +1,7 @@
-
 import 'package:get/get.dart';
 import 'package:koi_farm/models/response.model.dart';
 import 'package:koi_farm/models/user_model.dart';
-import 'package:koi_farm/repository/user_repo.dart';
+import 'package:koi_farm/data/repository/user_repo.dart';
 
 class UserController extends GetxController implements GetxService {
   final UserRepo userRepo;
@@ -17,7 +16,7 @@ class UserController extends GetxController implements GetxService {
   Future<ResponseModel> getUserInfo() async {
     Response response = await userRepo.getUserInfo();
     late ResponseModel responseModel;
-    print("test" + response.body.toString());
+    print("test " + response.body.toString());
     if (response.statusCode == 200) {
       //code 200 means no error
       _userModel = UserModel.fromJson(response.body);
