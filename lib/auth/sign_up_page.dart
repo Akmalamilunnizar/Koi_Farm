@@ -160,7 +160,7 @@ class SignUpPage extends StatelessWidget {
                     RichText(
                         text: TextSpan(
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () => Get.to(() => const SignInPage(),
+                              ..onTap = () => Get.to(() => SignInPage(),
                                   transition: Transition.fade),
                             text: "Sudah memiliki akun?",
                             style: TextStyle(

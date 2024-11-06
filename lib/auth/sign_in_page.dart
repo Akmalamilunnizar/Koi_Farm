@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:koi_farm/auth/sign_up_page.dart';
 import 'package:koi_farm/base/custom_loader.dart';
 import 'package:koi_farm/base/show_custom_snackbar.dart';
@@ -14,52 +16,60 @@ import 'package:koi_farm/widgets/app_text_field.dart';
 import 'package:koi_farm/widgets/big_text.dart';
 import 'package:get/get.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
+  _SignInPageState createState() => _SignInPageState();
+}
 
-    void _login(AuthController authController) {
-      // var authController = Get.find<AuthController>();
-      String email = emailController.text.trim();
-      String password = passwordController.text.trim();
+class _SignInPageState extends State<SignInPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
 
-      if (email.isEmpty) {
-        showCustomSnackBar("Kolom email tidak boleh kosong",
-            title: "Alamat Email");
-      } else if (!GetUtils.isEmail(email)) {
-        showCustomSnackBar("Ketik email yang valid",
-            title: "Email tidak valid");
-      } else if (password.isEmpty) {
-        showCustomSnackBar("Kolom password tidak boleh kosong",
-            title: "Password");
-      } else if (password.length < 6) {
-        showCustomSnackBar("Password tidak boleh kurang dari 6 huruf",
-            title: "Password terlalu pendek");
-      } else {
-        authController.login(email, password).then((status) {
+  void _login(AuthController authController) {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty) {
+      showCustomSnackBar("Kolom email tidak boleh kosong",
+          title: "Alamat Email");
+    } else if (!GetUtils.isEmail(email)) {
+      showCustomSnackBar("Ketik email yang valid", title: "Email tidak valid");
+    } else if (password.isEmpty) {
+      showCustomSnackBar("Kolom password tidak boleh kosong",
+          title: "Password");
+    } else if (password.length < 6) {
+      showCustomSnackBar("Password tidak boleh kurang dari 6 huruf",
+          title: "Password terlalu pendek");
+    } else {
+      authController.login(email, password).then((status) async {
+        print("Status Object: $status");
+
+        if (status == null) {
+          showCustomSnackBar(
+              "Login gagal: Respons API kosong atau tidak valid");
+        } else {
+          // Menggunakan status.isSuccess untuk memeriksa hasil login
           if (status.isSuccess) {
+            print("Login berhasil, token: ${status.message}");
             Get.find<UserController>().getUserInfo();
-            // Future.delayed(Duration(seconds: 5), () {
             Get.toNamed(RouteHelper.getInitial());
-            // });
-
-            print("Login berhasil");
-            print(status.message + "succe");
           } else {
-            showCustomSnackBar(status.message);
-            // print(error);
-            //print(status.message + "fail");
-
-            // print(email +" " + password.toString());
+            print("Login gagal: ${status.message}");
+            showCustomSnackBar(status.message ?? "Login gagal");
           }
-        });
-      }
+        }
+      }).catchError((error) {
+        print("Terjadi error saat login: $error");
+        showCustomSnackBar("Terjadi error saat login: $error");
+      });
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GetBuilder<AuthController>(
@@ -69,133 +79,186 @@ class SignInPage extends StatelessWidget {
                   physics: BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: Dimensions.screenHeight * 0.05,
-                      ),
-                      //app logo
+                      SizedBox(height: 25),
                       Container(
-                        height: Dimensions.screenHeight * 0.25,
-                        child: Center(
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 80,
-                            backgroundImage:
-                                AssetImage("assets/image/logo_part_1.png"),
+                        height:
+                            200, // Set tinggi dalam satuan pixel, yaitu 50 cm (500 mm)
+                        width: double.infinity, // Full lebar layar
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          image: DecorationImage(
+                            image: AssetImage("assets/image/koilogin.png"),
+                            fit: BoxFit.cover, // Mengisi seluruh area container
                           ),
                         ),
                       ),
+                      SizedBox(height: 20),
                       //welcome
                       Container(
-                        margin: EdgeInsets.only(left: Dimensions.width20),
-                        width: double.maxFinite,
+                        width: double.infinity,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
-                              "Halo!",
-                              style: TextStyle(
-                                  fontSize: Dimensions.font20 * 2 +
-                                      Dimensions.font20 / 2,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "Login melalui kolom dibawah",
-                              style: TextStyle(
-                                  fontSize: Dimensions.font20 * 1 +
-                                      Dimensions.font20 / 2,
-                                  //fontWeight: FontWeight.bold),
-                                  color: Colors.grey[500]),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20), // Padding sama kanan-kiri
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    'Welcome Back!',
+                                    textAlign: TextAlign
+                                        .center, // Rata kiri untuk teks judul
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 25,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      height: 5), // Tambahkan jarak antar teks
+                                  Text(
+                                    'Pantau Kolam Koi Anda Dengan Mudah',
+                                    textAlign: TextAlign
+                                        .center, // Rata kiri untuk teks subjudul
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
+                      SizedBox(height: 50),
                       SizedBox(
-                        height: Dimensions.height20,
+                        width: 340, // atur lebar sesuai keinginan
+                        height: 50, // atur tinggi sesuai keinginan
+                        child: TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.mail,
+                              color: Colors.grey,
+                            ),
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(width: 2.0, color: Colors.grey),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 20,
+                            ),
+                          ),
+                        ),
                       ),
-                      //email
-                      AppTextField(
-                          textController: emailController,
-                          hintText: "Email",
-                          icon: Icons.email_rounded),
+
+                      SizedBox(height: 15),
                       SizedBox(
-                        height: Dimensions.height20,
+                        width: 340, // set lebar menjadi 320
+                        height: 50, // set tinggi menjadi 50
+                        child: TextFormField(
+                          controller: passwordController,
+                          obscureText: !_isPasswordVisible,
+                          decoration: InputDecoration(
+                            labelText: "Kata Sandi",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: Colors.grey,
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(width: 2.0, color: Colors.grey),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 20,
+                            ),
+                          ),
+                        ),
                       ),
-                      //pass
-                      AppTextField(
-                        textController: passwordController,
-                        hintText: "Kata Sandi",
-                        icon: Icons.password,
-                        isObscure: true,
-                      ),
+
                       SizedBox(
                         height: Dimensions.height20,
                       ),
                       //tag line
-                      Row(
-                        children: [
-                          Expanded(child: Container()),
-                          RichText(
-                              text: TextSpan(
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () => Get.back(),
-                                  text: "Login ke akun anda",
-                                  style: TextStyle(
-                                      color: Colors.grey[500],
-                                      fontSize: Dimensions.font20))),
-                          SizedBox(
-                            width: Dimensions.width20,
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: Dimensions.screenHeight * 0.05,
-                      ),
+
+                      SizedBox(height: 10),
                       //signin
-                      GestureDetector(
-                        onTap: () {
-                          _login(authController);
-                        },
-                        child: Container(
-                          width: Dimensions.screenWidth / 2,
-                          height: Dimensions.screenWidth / 9,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(Dimensions.radius30),
-                              color: AppColors.mainColor),
-                          child: Center(
-                            child: BigText(
-                              text: "Masuk",
-                              size: Dimensions.font20 + Dimensions.font20 / 2,
-                              color: Colors.white,
+                      Column(
+                        // Menggunakan Column untuk mengatur tata letak vertikal
+                        children: [
+                          // SizedBox(height: 40), // Jarak vertikal 50px
+                          GestureDetector(
+                            onTap: () {
+                              _login(
+                                  authController); // Ganti dengan logika yang tepat untuk login
+                            },
+                            child: Center(
+                              child: Container(
+                                width: 340, // Panjang tombol
+                                height: 50, // Tinggi tombol
+                                decoration: BoxDecoration(
+                                  color: Color(
+                                      0xFF1A5319), // Warna latar belakang tombol
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Sudut lengkung tombol
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Masuk",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16, // Ukuran font teks
+                                      color: Colors.white, // Warna teks
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    textAlign:
+                                        TextAlign.center, // Rata tengah teks
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
+
                       SizedBox(
                         height: Dimensions.screenHeight * 0.05,
-                      ),
-                      //sign up options
-                      RichText(
-                        text: TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.to(() => SignUpPage(),
-                                transition: Transition.fade),
-                          text: "Tidak memiliki akun? ",
-                          style: TextStyle(
-                              color: Colors.grey[500],
-                              fontSize: Dimensions.font20),
-                          children: [
-                            TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Get.to(() => SignUpPage(),
-                                      transition: Transition.fade),
-                                text: " Buat akun!",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.mainBlackColor,
-                                    fontSize: Dimensions.font20)),
-                          ],
-                        ),
                       ),
                     ],
                   ),

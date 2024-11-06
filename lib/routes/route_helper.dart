@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:koi_farm/auth/sign_in_page.dart';
+import 'package:koi_farm/pages/account/login.dart';
 import 'package:koi_farm/pages/detail/detail_koi.dart';
 import 'package:koi_farm/pages/detail/monitor_page.dart';
 import 'package:koi_farm/pages/detail/parameter_page.dart';
@@ -21,6 +22,7 @@ class RouteHelper {
   static const String cartHistoryPage = "/cart-history-page";
   static const String payment = '/payment';
   static const String orderSuccess = '/order-successful';
+  static const String login = '/login';
 
   static String getSplashPage() => '$splashPage';
   static String getInitial() => '$initial';
@@ -78,5 +80,11 @@ class RouteHelper {
           return DetailKoi();
         },
         transition: Transition.fade),
+    // GetPage(
+    //     name: login(),
+    //     page: () {
+    //       return LoginPage();
+    //     },
+    //     transition: Transition.fade),
   ];
 }

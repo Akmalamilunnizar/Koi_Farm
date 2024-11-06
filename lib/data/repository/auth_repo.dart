@@ -4,7 +4,6 @@ import 'package:koi_farm/models/signup_body_model.dart';
 import 'package:koi_farm/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class AuthRepo {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
@@ -26,8 +25,10 @@ class AuthRepo {
   }
 
   Future<Response> login(String email, String password) async {
-    return await apiClient.postData(
+    Response response = await apiClient.postData(
         AppConstants.LOGIN_URI, {"email": email, "password": password});
+    print("Response from login API: ${response.body}");
+    return response;
   }
 
   Future<bool> saveUserToken(String token) async {
