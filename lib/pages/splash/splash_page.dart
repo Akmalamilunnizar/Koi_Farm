@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koi_farm/controllers/pond_controller.dart';
 import 'package:koi_farm/controllers/user_controller.dart';
 import 'package:koi_farm/routes/route_helper.dart';
 import 'package:koi_farm/utils/colors.dart';
@@ -24,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
     // await Get.find<PopularProductController>().getPopularProductList();
     // await Get.find<RecommendedProductController>().getRecommendedProductList();
     await Get.find<UserController>().getUserInfo();
+    await Get.find<PondController>().getPondList();
   }
 
   @override

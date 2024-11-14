@@ -1,12 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koi_farm/controllers/auth_controller.dart';
+import 'package:koi_farm/controllers/pond_controller.dart';
 import 'package:koi_farm/controllers/user_controller.dart';
 import 'package:koi_farm/pages/detail/monitor_page.dart';
+import 'package:koi_farm/pages/ponds/view_pond.dart';
 import 'package:koi_farm/routes/route_helper.dart';
+import 'package:koi_farm/utils/app_constants.dart';
 import 'package:koi_farm/utils/colors.dart';
 import 'package:koi_farm/utils/dimensions.dart';
 import 'package:koi_farm/utils/smart_device_box.dart';
+import 'package:koi_farm/widgets/big_text.dart';
 import 'package:koi_farm/widgets/heading.dart';
 import 'package:koi_farm/widgets/parameter_item.dart';
 import 'package:lottie/lottie.dart';
@@ -18,8 +25,10 @@ class PondPage extends StatefulWidget {
   State<PondPage> createState() => _PondPageState();
 }
 
-class _PondPageState extends State<PondPage> {
-  // padding constants
+class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
+  late bool _isLoggedIn;
+  // bool _isNotAvailable = true;
+
   final double horizontalPadding = 40;
   final double verticalPadding = 25;
 
@@ -28,186 +37,160 @@ class _PondPageState extends State<PondPage> {
   ).createShader(const Rect.fromLTRB(0.0, 0.0, 200.0, 70.0));
 
   @override
+  void initState() {
+    super.initState();
+    _isLoggedIn = Get.find<AuthController>().userLoggedIn();
+    if (_isLoggedIn) {
+      Get.find<PondController>().getPondList();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: Container(
-        width: double.maxFinite,
-        height: double.maxFinite,
-        child: Stack(
-          children: [
-            Positioned(
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: double.maxFinite,
-                  height: 280,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/image/backgroundapp.jpg"),
-                        fit: BoxFit.cover),
-                  ),
-                )),
-            GetBuilder<UserController>(
-              builder: (userController) {
-                return Positioned(
-                    left: 20,
-                    top: 40,
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          "assets/image/logo.png",
-                          height: 45,
-                        ),
-                      ],
-                    ));
-              }
-            ),
-            Positioned(
-              top: 250,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 400,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(Dimensions.radius30),
-                      topRight: Radius.circular(Dimensions.radius30)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Heading(
-                          heading: 'Daftar Kolam',
-                        ),
-                      SizedBox(
-                        height: Dimensions.height15,
-                      ),
-                      Expanded(
-                        child: GridView.builder(
-                          itemCount: 2,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1),
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.toNamed(RouteHelper.getMonitorPage());
-                                // print("onTapPond");
-                                // Get.toNamed(RouteHelper.getRecommendedFood(
-                                //     index, "home"));
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width: size.width,
-                                        height: 210,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                    "assets/image/pond1.jpg"))),
-                                      ),
-                                      Positioned(
-                                        top: 15,
-                                        left: 15,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 8),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: "Kolam Tegalgede",
-                                                  style: TextStyle(
-                                                    fontSize: Dimensions.font16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                // TextSpan(
-                                                //     text: "/1",
-                                                //     style: TextStyle(
-                                                //         fontSize: Dimensions.font16,
-                                                //         fontWeight: FontWeight.normal,
-                                                //         color: Colors.black54))
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: Dimensions.height10,
-                                  ),
-                                  Text(
-                                    "Jumlah ikan",
-                                    style: TextStyle(
-                                        fontSize: Dimensions.font16,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.water,
-                                        size: 15,
-                                        color: Colors.grey.shade500,
-                                      ),
-                                      SizedBox(
-                                        width: Dimensions.width10,
-                                      ),
-                                      Text(
-                                        "Volume",
-                                        style: TextStyle(
-                                          fontSize: Dimensions.font16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.grey.shade500,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          right: 0,
+          child: Container(
+            width: double.maxFinite,
+            height: 280,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/image/backgroundapp.jpg"),
+                fit: BoxFit.cover,
               ),
             ),
-
-            // Positioned(
-            //   left: 0,
-            //   top: -100,
-            //   right: 0,
-            //   child: Container(
-            //     width: double.maxFinite,
-            //     height: 300,
-            //     decoration: BoxDecoration(
-            //         image: DecorationImage(
-            //             image: AssetImage('assets/image/pisanggoreng.jpg'))),
-            //   ),
-            // )
-          ],
+          ),
         ),
-      ),
+        GetBuilder<PondController>(builder: (pondController) {
+          return pondController.isLoading
+              ? Positioned(
+                  top: 250,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 400,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(Dimensions.radius30),
+                        topRight: Radius.circular(Dimensions.radius30),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Heading(heading: 'Daftar Kolam'),
+                          SizedBox(height: Dimensions.height15),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: pondController.pondList
+                                  .length, // Use currentOrderList from the controller
+
+                              itemBuilder: (context, index) {
+                                final pond = pondController
+                                    .pondList[index]; // Access each PondModel
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(RouteHelper.getMonitorPage());
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 210,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  AppConstants.BASE_URL +
+                                                      AppConstants.UPLOAD_URL +
+                                                      pondController
+                                                          .pondList[index]
+                                                          .img!, // Access img from each PondModel
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 15,
+                                            left: 15,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 12,
+                                                vertical: 8,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Text(
+                                                pond.name ?? "No Name",
+                                                style: TextStyle(
+                                                  fontSize: Dimensions.font16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: Dimensions.height10),
+                                      Text(
+                                        "Jumlah ikan: ${pond.createdAt}",
+                                        style: TextStyle(
+                                          fontSize: Dimensions.font16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.water,
+                                              size: 15,
+                                              color: Colors.grey.shade500),
+                                          SizedBox(width: Dimensions.width10),
+                                          Text(
+                                            "Volume: ${pond.volume}" + " ml",
+                                            style: TextStyle(
+                                              fontSize: Dimensions.font16,
+                                              color: Colors.grey.shade500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.mainColor,
+                  ),
+                );
+        })
+      ],
     );
   }
 }
