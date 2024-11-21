@@ -64,7 +64,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/image/
-    # - assets/image/
+    # - assets/images/koi
   fonts:
     - family: Roboto
       fonts:

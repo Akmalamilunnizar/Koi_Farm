@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:koi_farm/routes/route_helper.dart';
 import 'package:koi_farm/utils/colors.dart';
 import 'helper/dependencies.dart' as dep;
+import 'package:koi_farm/data/api/api_client.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

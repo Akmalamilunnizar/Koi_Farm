@@ -24,7 +24,15 @@ class AuthRepo {
     return await sharedPreferences.getString(AppConstants.TOKEN) ?? "None";
   }
 
+  // Future<Response> login(String email, String password) async {
+  //   Response response = await apiClient.postData(
+  //       AppConstants.LOGIN_URI, {"email": email, "password": password});
+  //   print("Response from login API: ${response.body}");
+  //   return response;
+  // }
+
   Future<Response> login(String email, String password) async {
+    // Kombinasikan base URL dan LOGIN_URI
     Response response = await apiClient.postData(
         AppConstants.LOGIN_URI, {"email": email, "password": password});
     print("Response from login API: ${response.body}");

@@ -11,6 +11,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import 'package:koi_farm/pages/account/account_page.dart';
 import 'package:koi_farm/pages/home/main_food_page.dart';
+import 'package:koi_farm/pages/entity/koi_page.dart';
 // import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
