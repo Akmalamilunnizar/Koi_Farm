@@ -7,6 +7,7 @@ import 'package:koi_farm/pages/detail/parameter_page.dart';
 import 'package:koi_farm/pages/entity/koi_page.dart';
 import 'package:koi_farm/pages/home/home_page.dart';
 import 'package:koi_farm/pages/splash/splash_page.dart';
+import 'package:koi_farm/pages/account/account_page.dart';
 
 class RouteHelper {
   static const String initial = "/";
@@ -23,10 +24,11 @@ class RouteHelper {
   static const String payment = '/payment';
   static const String orderSuccess = '/order-successful';
   static const String login = '/login';
+  static const String accountPage = "/account-page";
 
   static String getSplashPage() => '$splashPage';
   static String getInitial() => '$initial';
-  static String getMonitorPage() => '$monitorPage';
+  static String getMonitorPage(String pondId) => '$monitorPage?id=$pondId';
   static String getParameterPage() => '$parameterPage';
   static String getKoiPage() => '$koiPage';
   static String getDetailKoiPage() => '$detailKoiPage';
@@ -37,6 +39,7 @@ class RouteHelper {
   static String getCartPage() => '$cartPage';
   static String getCartHistoryPage() => '$cartHistoryPage';
   static String getSignInPage() => '$signIn';
+  static String getAccountPage() => '$accountPage';
   static String getPaymentPage(String id, int userID) =>
       '$payment?id=$id&userID=$userID';
   static String getOrderSuccessPage(String orderID, String status) =>
@@ -78,6 +81,12 @@ class RouteHelper {
         name: detailKoiPage,
         page: () {
           return DetailKoi();
+        },
+        transition: Transition.fade),
+    GetPage(
+        name: accountPage,
+        page: () {
+          return AccountPage();
         },
         transition: Transition.fade),
     // GetPage(

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:koi_farm/models/pond_model.dart';
 import 'package:koi_farm/routes/route_helper.dart';
 import 'package:koi_farm/utils/colors.dart';
 import 'package:koi_farm/utils/dimensions.dart';
@@ -22,6 +24,8 @@ class _MonitorPageState extends State<MonitorPage> {
   final double verticalPadding = 25;
 
   bool isConditionTrue = false; // Initially set to false
+  late String pondId;
+  final PondModel pond = Get.arguments;
 
   @override
   void initState() {
@@ -32,6 +36,8 @@ class _MonitorPageState extends State<MonitorPage> {
     //     isConditionTrue = !isConditionTrue; // Toggle the condition
     //   });
     // });
+    pondId = Get.parameters['id'] ?? 'Unknown';
+    // Use pondId to fetch or display the data for this pond
   }
 
 // Create a GlobalKey to control the Scaffold
@@ -83,17 +89,7 @@ class _MonitorPageState extends State<MonitorPage> {
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // Define your action here
-                      Get.offNamed(RouteHelper.getSignInPage());
-                    },
-                    child: Image.asset(
-                      "assets/image/user.png",
-                      width: Dimensions.width30,
-                    ),
-                  ),
+                children: [                  
                   const SizedBox(
                     width: 4,
                   ),
@@ -111,14 +107,15 @@ class _MonitorPageState extends State<MonitorPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Tegalgede",
+              '${pond.name}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30.0,
               ),
             ),
             Text(
-              "Minggu, 8 Mei",
+              DateFormat('EEEE, d MMMM')
+                  .format(DateTime.now()), // Format the current date
               style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 16.0,
@@ -163,10 +160,13 @@ class _MonitorPageState extends State<MonitorPage> {
                           bottom: 30,
                           left: 20,
                           child: Text(
-                            "Keran Hidup",
+                            pond.relay_condition == 1
+                                ? 'Keran Hidup'
+                                : 'Keran Mati',
                             style: GoogleFonts.notoSansJp(
-                                fontSize: Dimensions.font20,
-                                color: Colors.white),
+                              fontSize: Dimensions.font20,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
 
@@ -297,9 +297,9 @@ class _MonitorPageState extends State<MonitorPage> {
                     imageUrl: 'assets/image/thermometer.png',
                   ),
                   ParameterItem(
-                    text: 'DO Meter',
-                    value: "193.2",
-                    unit: '%',
+                    text: 'TDS',
+                    value: "130",
+                    unit: 'ppm',
                     imageUrl: 'assets/image/dissolved-oxygen-monitor.png',
                   ),
                 ],
@@ -335,50 +335,76 @@ class _MonitorPageState extends State<MonitorPage> {
               ],
             ),
             SizedBox(
-              height: 10,
+              height: 30,
             ),
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Expanded digunakan jika ada elemen dinamis seperti ListView
-                  Container(
-                    height:
-                        120, // Set the height large enough for the box shadow
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10), // Adjust the padding
-                          // Margin fixing the cropped boxShadow
-                          margin:
-                              EdgeInsets.only(right: 20, bottom: 10, top: 10),
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            image: DecorationImage(
-                              image: AssetImage("assets/image/koi.jpeg"),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0, 1),
-                                blurRadius: 5,
-                                color: Colors.black54.withOpacity(.3),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Parameter Kolam',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: Dimensions.font26,
                   ),
-                ],
-              ),
-            )
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Define your action here
+                    Get.toNamed(RouteHelper.getParameterPage());
+                  },
+                  child: Text(
+                    'Detail Lengkap',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: Dimensions.font16,
+                        color: AppColors.mainColor),
+                  ),
+                ),
+              ],
+            ),
+            // SingleChildScrollView(
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       // Expanded digunakan jika ada elemen dinamis seperti ListView
+            //       Container(
+            //         height:
+            //             120, // Set the height large enough for the box shadow
+            //         child: ListView.builder(
+            //           scrollDirection: Axis.horizontal,
+            //           itemCount: 5,
+            //           itemBuilder: (BuildContext context, int index) {
+            //             return Container(
+            //               padding: EdgeInsets.symmetric(
+            //                   vertical: 10), // Adjust the padding
+            //               // Margin fixing the cropped boxShadow
+            //               margin:
+            //                   EdgeInsets.only(right: 20, bottom: 10, top: 10),
+            //               width: 80,
+            //               decoration: BoxDecoration(
+            //                 color: Colors.white,
+            //                 image: DecorationImage(
+            //                   image: AssetImage("assets/image/koi.jpeg"),
+            //                   fit: BoxFit.fill,
+            //                 ),
+            //                 borderRadius: BorderRadius.all(Radius.circular(10)),
+            //                 boxShadow: [
+            //                   BoxShadow(
+            //                     offset: Offset(0, 1),
+            //                     blurRadius: 5,
+            //                     color: Colors.black54.withOpacity(.3),
+            //                   ),
+            //                 ],
+            //               ),
+            //             );
+            //           },
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // )
 
             // https://www.youtube.com/watch?v=kpHHPZocFMw&list=PLgadKTyFdWuhSyMbTAYGV10KK0rU364t4&index=4 13:49
 

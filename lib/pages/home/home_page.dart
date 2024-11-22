@@ -26,9 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   // late PersistentTabController _controller;
   List pages = [
-    PondPage(),
-    DetailKoi(),
-    ParameterPage(),
+    PondPage(),    
     AccountPage(),
   ];
 
@@ -87,8 +85,6 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _buildScreens() {
     return [
       PondPage(),
-      DetailKoi(),
-      ParameterPage(),
       AccountPage(),
     ];
   }
@@ -100,19 +96,7 @@ class _HomePageState extends State<HomePage> {
         title: ("Home"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.play_circle),
-        title: ("Koi"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.book),
-        title: ("Parameter Kolam"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
+      ),      
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.profile_circled),
         title: ("Profile"),

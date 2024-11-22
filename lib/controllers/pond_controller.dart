@@ -5,6 +5,7 @@ import 'package:koi_farm/models/pond_model.dart';
 
 class PondController extends GetxController implements GetxService {
   PondRepo pondRepo;
+  
   PondController({required this.pondRepo});
   bool _isLoading = false;
   List<PondModel> _pondList = [];
@@ -40,6 +41,11 @@ class PondController extends GetxController implements GetxService {
     }
   }
 
+  // void updatePondList(List<PondModel> newPondList) {
+  //   pondList.value = newPondList; // Update the pond list
+  //   update(); // Notify GetBuilder to rebuild the dependent widget
+  // }
+
   Future<void> getPondList() async {
   _isLoading = false;
   update(); // Trigger UI update before starting loading
@@ -65,8 +71,8 @@ class PondController extends GetxController implements GetxService {
 
 
 
-  void setFoodNote(String note) {
-    _foodNote = note;
-    // update(); causing double update error in cart page because two nested controller
-  }
+  // void setFoodNote(String note) {
+  //   _foodNote = note;
+  //   // update(); causing double update error in cart page because two nested controller
+  // }
 }

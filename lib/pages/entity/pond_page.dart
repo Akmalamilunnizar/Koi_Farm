@@ -39,10 +39,11 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _isLoggedIn = Get.find<AuthController>().userLoggedIn();
-    if (_isLoggedIn) {
-      Get.find<PondController>().getPondList();
-    }
+    // _isLoggedIn = Get.find<AuthController>().userLoggedIn();
+    Get.find<PondController>().getPondList();
+    // if (_isLoggedIn) {
+
+    // }
   }
 
   @override
@@ -93,11 +94,12 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
                                   .length, // Use currentOrderList from the controller
 
                               itemBuilder: (context, index) {
-                                final pond = pondController
-                                    .pondList[index]; // Access each PondModel
+                                final pond = pondController.pondList[index];
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(RouteHelper.getMonitorPage());
+                                    Get.to(MonitorPage(), arguments: pond);
+                                    //                                 final pondId = pondController.pondList[index].id; // Assuming id is an int
+                                    // Get.toNamed(RouteHelper.getMonitorPage(pondId.toString())); // Convert to String
                                   },
                                   child: Column(
                                     crossAxisAlignment:
@@ -151,13 +153,13 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
                                         ],
                                       ),
                                       SizedBox(height: Dimensions.height10),
-                                      Text(
-                                        "Jumlah ikan: ${pond.createdAt}",
-                                        style: TextStyle(
-                                          fontSize: Dimensions.font16,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
+                                      // Text(
+                                      //   "Dibuat tanggal: ${pond.createdAt}",
+                                      //   style: TextStyle(
+                                      //     fontSize: Dimensions.font16,
+                                      //     fontWeight: FontWeight.w700,
+                                      //   ),
+                                      // ),
                                       Row(
                                         children: [
                                           Icon(Icons.water,

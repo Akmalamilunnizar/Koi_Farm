@@ -159,7 +159,13 @@ class _KoiPageState extends State<KoiPage> {
                                                       Dimensions.radius15),
                                               image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: NetworkImage(koi.img),
+                                                image: NetworkImage(
+                                                 "http://127.0.0.1:8000" +
+                                                      '/uploads/' +
+                                                      koiList
+                                                          [index]
+                                                          .img!, // Access img from each PondModel
+                                                ),
                                               ),
                                             ),
                                           ),

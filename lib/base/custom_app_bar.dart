@@ -25,13 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
     backgroundColor: AppColors.mainColor,
       elevation: 0,
-      leading: backButtonExist
-          ? IconButton(
-              onPressed: () => onBackPressed != null
-                  ? onBackPressed!()
-                  : Navigator.pushReplacementNamed(context, "/initial"),
-              icon: Icon(Icons.arrow_back_ios_new_rounded))
-          : SizedBox(),
+      
     );
   }
 

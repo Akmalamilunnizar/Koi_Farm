@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:koi_farm/models/JenisKoi.dart';
 import 'package:koi_farm/models/daftarkoi_model.dart';
 import 'package:koi_farm/pages/entity/koi_page.dart';
 import 'package:koi_farm/utils/app_constants.dart';
@@ -66,16 +67,16 @@ class ApiClient extends GetConnect implements GetxService {
   }
 
   // Method to fetch the koi list
-  Future<List<DaftarKoiModel>> fetchKoiList() async {
-    final response = await http.get(Uri.parse('$baseUrl/api/v1/daftarkoi'));
+ Future<List<DaftarKoiModel>> fetchKoiList() async {
+  try {
+    final response = await http.get(Uri.parse('$baseUrl/api/v1/koi/list'));
 
     if (response.statusCode == 200) {
-      // Decode JSON
+      // Decode the JSON response
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-      // Pastikan 'data' adalah daftar
       if (jsonResponse['data'] is List) {
-        // Konversi ke model
+        // Map the data list to `DaftarKoiModel`
         return (jsonResponse['data'] as List)
             .map((e) => DaftarKoiModel.fromJson(e))
             .toList();
@@ -83,14 +84,32 @@ class ApiClient extends GetConnect implements GetxService {
         throw Exception("Invalid 'data' format in API response");
       }
     } else {
-      throw Exception('Failed to fetch Koi data');
+      throw Exception('Failed to fetch Koi data. Status code: ${response.statusCode}');
     }
+  } catch (e) {
+    // Log or handle error
+    print('Error fetching Koi data: $e');
+    throw Exception('Error fetching Koi data: $e');
   }
+}
+
+Future<List<JenisKoi>> fetchJenisKoiList() async {
+  final response = await http.get(Uri.parse('$baseUrl/api/v1/jenis-koi'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonResponse = json.decode(response.body);
+    return jsonResponse.map((json) => JenisKoi.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to fetch JenisKoi data');
+  }
+}
+
+
 
   Future<int> fetchKoiCount() async {
     //buat ngitung jumlah koi
     try {
-      final response = await http.get(Uri.parse('$baseUrl/api/v1/daftarkoi'));
+      final response = await http.get(Uri.parse('$baseUrl/api/v1/koi/list'));
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body); // Parsing JSON
         var koiData = jsonData['data']; // Ambil array 'data'

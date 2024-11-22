@@ -30,6 +30,8 @@ class AppConstants {
   static const String CART_LIST = "cart-list";
   static const String CART_HISTORY_LIST = "cart-history-list";
 
-  static String PLACE_POND_URI = "/api/v1/customer/pond/place";
-  static const String POND_LIST_URI = "/api/v1/customer/pond/list";
+  static String PLACE_POND_URI = "/api/v1/pond/place";
+  static const String POND_LIST_URI = "/api/v1/pond/list";
+
+  static const String KOI_LIST_URI = "/api/v1/pond/list";
 }
