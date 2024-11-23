@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:koi_farm/controllers/auth_controller.dart';
 import 'package:koi_farm/controllers/pond_controller.dart';
 import 'package:koi_farm/controllers/user_controller.dart';
+import 'package:koi_farm/data/api/api_client.dart';
+import 'package:koi_farm/models/daftarkoi_model.dart';
 import 'package:koi_farm/pages/detail/monitor_page.dart';
 import 'package:koi_farm/pages/ponds/view_pond.dart';
 import 'package:koi_farm/routes/route_helper.dart';
@@ -27,7 +29,9 @@ class PondPage extends StatefulWidget {
 
 class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
   late bool _isLoggedIn;
-  // bool _isNotAvailable = true;
+  late String pondId;
+  late ApiClient apiClient;
+  late Future<List<DaftarKoiModel>> koiListFuture;
 
   final double horizontalPadding = 40;
   final double verticalPadding = 25;
@@ -39,11 +43,10 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    // _isLoggedIn = Get.find<AuthController>().userLoggedIn();
+    // Initialize ApiClient here before using it
+    apiClient = Get.find<ApiClient>();
+    koiListFuture = Future.value([]); // Default to an empty list until we get the pondId
     Get.find<PondController>().getPondList();
-    // if (_isLoggedIn) {
-
-    // }
   }
 
   @override
@@ -90,20 +93,18 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
                           SizedBox(height: Dimensions.height15),
                           Expanded(
                             child: ListView.builder(
-                              itemCount: pondController.pondList
-                                  .length, // Use currentOrderList from the controller
-
+                              itemCount: pondController.pondList.length,
                               itemBuilder: (context, index) {
                                 final pond = pondController.pondList[index];
+                                pondId = '${pond.id}'; // Extract pondId as string
+                                koiListFuture = apiClient.fetchKoiListByPond(pondId); // Set koiListFuture
+                                
                                 return GestureDetector(
                                   onTap: () {
                                     Get.to(MonitorPage(), arguments: pond);
-                                    //                                 final pondId = pondController.pondList[index].id; // Assuming id is an int
-                                    // Get.toNamed(RouteHelper.getMonitorPage(pondId.toString())); // Convert to String
                                   },
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Stack(
                                         children: [
@@ -122,7 +123,7 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
                                                       AppConstants.UPLOAD_URL +
                                                       pondController
                                                           .pondList[index]
-                                                          .img!, // Access img from each PondModel
+                                                          .img!,
                                                 ),
                                               ),
                                             ),
@@ -153,13 +154,29 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
                                         ],
                                       ),
                                       SizedBox(height: Dimensions.height10),
-                                      // Text(
-                                      //   "Dibuat tanggal: ${pond.createdAt}",
-                                      //   style: TextStyle(
-                                      //     fontSize: Dimensions.font16,
-                                      //     fontWeight: FontWeight.w700,
-                                      //   ),
-                                      // ),
+                                      FutureBuilder<List<DaftarKoiModel>>(
+                                        future: koiListFuture, 
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                'Error: ${snapshot.error}');
+                                          } else if (!snapshot.hasData ||
+                                              snapshot.data!.isEmpty) {
+                                            return Text('No koi found.');
+                                          } else {
+                                            return Text(
+                                              "Jumlah koi: ${snapshot.data!.length}",
+                                              style: TextStyle(
+                                                fontSize: Dimensions.font16,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                       Row(
                                         children: [
                                           Icon(Icons.water,
@@ -175,6 +192,7 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
                                           ),
                                         ],
                                       ),
+                                      SizedBox(height: Dimensions.height45),
                                     ],
                                   ),
                                 );
@@ -196,3 +214,4 @@ class _PondPageState extends State<PondPage> with TickerProviderStateMixin {
     );
   }
 }
+

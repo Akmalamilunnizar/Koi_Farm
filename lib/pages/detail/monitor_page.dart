@@ -37,6 +37,8 @@ class _MonitorPageState extends State<MonitorPage> {
     //   });
     // });
     pondId = Get.parameters['id'] ?? 'Unknown';
+
+    print("pondId= " + pondId);
     // Use pondId to fetch or display the data for this pond
   }
 
@@ -68,28 +70,28 @@ class _MonitorPageState extends State<MonitorPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Builder(
-                // Use Builder to access context under the Scaffold
-                builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      // Open the drawer when menu icon is tapped
-                      Scaffold.of(context).openDrawer();
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      child: Image.asset(
-                        "assets/image/menu.png",
-                        width: Dimensions.width30,
-                        height: Dimensions.height30,
-                      ),
-                    ),
-                  );
-                },
-              ),
+              // Builder(
+              //   // Use Builder to access context under the Scaffold
+              //   builder: (context) {
+              //     return GestureDetector(
+              //       onTap: () {
+              //         // Open the drawer when menu icon is tapped
+              //         // Scaffold.of(context).openDrawer();
+              //       },
+              //       // child: ClipRRect(
+              //       //   borderRadius: BorderRadius.all(Radius.circular(5)),
+              //       //   child: Image.asset(
+              //       //     "assets/image/menu.png",
+              //       //     width: Dimensions.width30,
+              //       //     height: Dimensions.height30,
+              //       //   ),
+              //       // ),
+              //     );
+              //   },
+              // ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [                  
+                children: [
                   const SizedBox(
                     width: 4,
                   ),
@@ -100,7 +102,7 @@ class _MonitorPageState extends State<MonitorPage> {
           ),
         ),
       ),
-      drawer: CustomMenu(),
+      // drawer: CustomMenu(),
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -321,8 +323,11 @@ class _MonitorPageState extends State<MonitorPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // Define your action here
-                    Get.toNamed(RouteHelper.getKoiPage());
+                    Get.toNamed(RouteHelper.getKoiPage(), arguments: {
+                      'pondId': '${pond.id}', // Pond ID as a string
+                      'pondName': '${pond.name}' ??
+                          '', // Pond name (if available, default to empty string)
+                    });
                   },
                   child: Text(
                     'Daftar Lengkap',

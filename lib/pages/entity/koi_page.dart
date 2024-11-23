@@ -18,18 +18,22 @@ class KoiPage extends StatefulWidget {
 class _KoiPageState extends State<KoiPage> {
   late ApiClient apiClient;
   late Future<List<DaftarKoiModel>> koiListFuture;
+  late String pondId, pondName;
 
   @override
   void initState() {
     super.initState();
-    apiClient = Get.find<ApiClient>(); // Initialize the ApiClient
-    koiListFuture = apiClient.fetchKoiList(); // Fetch the koi list
+    pondId = Get.arguments['pondId'];
+    pondName = Get.arguments['pondName']; // Retrieve the passed pondId
+    apiClient = Get.find<ApiClient>();
+    koiListFuture = apiClient
+        .fetchKoiListByPond(pondId); // Fetch koi list filtered by pondId
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomMenu(),
+      // drawer: CustomMenu(),
       body: Stack(
         children: [
           // Gambar latar belakang
@@ -47,28 +51,28 @@ class _KoiPageState extends State<KoiPage> {
             ),
           ),
           // Tombol menu untuk drawer
-          Positioned(
-            left: 20,
-            top: 40,
-            child: Builder(
-              builder: (context) {
-                return GestureDetector(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.asset(
-                      "assets/image/menu.png",
-                      width: Dimensions.width30,
-                      height: Dimensions.height30,
-                      color: Colors.white,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+          // Positioned(
+          //   left: 20,
+          //   top: 40,
+          //   child: Builder(
+          //     builder: (context) {
+          //       return GestureDetector(
+          //         onTap: () {
+          //           Scaffold.of(context).openDrawer();
+          //         },
+          //         child: ClipRRect(
+          //           borderRadius: BorderRadius.circular(5),
+          //           child: Image.asset(
+          //             "assets/image/menu.png",
+          //             width: Dimensions.width30,
+          //             height: Dimensions.height30,
+          //             color: Colors.white,
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
           // Konten utama
           Positioned(
             top: 250, // Menyesuaikan posisi konten
@@ -101,7 +105,7 @@ class _KoiPageState extends State<KoiPage> {
                   // Menampilkan jumlah ikan koi
                   SizedBox(height: 10),
                   FutureBuilder<int>(
-                    future: apiClient.fetchKoiCount(),
+                    future: apiClient.fetchKoiCountId(pondId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Text("Loading...");
@@ -109,7 +113,7 @@ class _KoiPageState extends State<KoiPage> {
                         return Text('Error: ${snapshot.error}');
                       } else if (snapshot.hasData) {
                         return Text(
-                          "Jumlah Koi di Kolam Tegalgede: ${snapshot.data}",
+                          "Jumlah Koi di ${pondName}: ${snapshot.data}",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -124,7 +128,7 @@ class _KoiPageState extends State<KoiPage> {
                   // SizedBox(height: 15), // Menambahkan sedikit jarak
                   Expanded(
                     child: FutureBuilder<List<DaftarKoiModel>>(
-                      future: koiListFuture,
+                      future: koiListFuture, // Already filtered by pondId
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -149,9 +153,9 @@ class _KoiPageState extends State<KoiPage> {
                                     children: [
                                       Row(
                                         children: [
-                                          // Gambar koi
+                                          // Koi image
                                           Container(
-                                            height: 80,
+                                            height: 100,
                                             width: 100,
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -160,16 +164,12 @@ class _KoiPageState extends State<KoiPage> {
                                               image: DecorationImage(
                                                 fit: BoxFit.cover,
                                                 image: NetworkImage(
-                                                 "http://127.0.0.1:8000" +
-                                                      '/uploads/' +
-                                                      koiList
-                                                          [index]
-                                                          .img!, // Access img from each PondModel
-                                                ),
+                                                    "http://127.0.0.1:8000/storage/" +
+                                                        koi.img!),
                                               ),
                                             ),
                                           ),
-                                          // Detail koi
+                                          // Koi details
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
@@ -186,25 +186,22 @@ class _KoiPageState extends State<KoiPage> {
                                               ],
                                             ),
                                           ),
-                                          // Tombol aksi
+                                          // Action icon
                                           GestureDetector(
                                             onTap: () {
                                               Get.to(DetailKoi(),
                                                   arguments: koi);
                                             },
-                                            child: Icon(
-                                              Icons.touch_app,
-                                              color: Colors.orange,
-                                            ),
+                                            child: Icon(Icons.touch_app,
+                                                color: Colors.orange),
                                           ),
                                         ],
                                       ),
                                       Divider(
-                                        color: Colors.grey,
-                                        thickness: 1,
-                                        indent: 15,
-                                        endIndent: 15,
-                                      ),
+                                          color: Colors.grey,
+                                          thickness: 1,
+                                          indent: 15,
+                                          endIndent: 15),
                                     ],
                                   ),
                                 ),
@@ -212,11 +209,12 @@ class _KoiPageState extends State<KoiPage> {
                             },
                           );
                         } else {
-                          return Center(child: Text("No koi available"));
+                          return Center(
+                              child: Text("No koi available for this pond"));
                         }
                       },
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

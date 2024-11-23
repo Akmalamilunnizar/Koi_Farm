@@ -93,6 +93,53 @@ class ApiClient extends GetConnect implements GetxService {
   }
 }
 
+Future<List<DaftarKoiModel>> fetchKoiListByPond(String pondId) async {
+  try {
+    // Correct API URL based on your route definition
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/v1/koi/ponds?pondId=$pondId'));
+
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['data'] is List) {
+        // Map the data list to `DaftarKoiModel`
+        return (jsonResponse['data'] as List)
+            .map((e) => DaftarKoiModel.fromJson(e))
+            .toList();
+      } else {
+        throw Exception("Invalid 'data' format in API response");
+      }
+    } else {
+      throw Exception('Failed to fetch Koi data. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Log or handle error
+    print('Error fetching Koi data: $e');
+    throw Exception('Error fetching Koi data: $e');
+  }
+}
+
+
+// Future<List<DaftarKoiModel>> fetchKoiListByPond(String pondId) async {
+//   final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/v1/koi/ponds?pondId=$pondId'));
+
+//   if (response.statusCode == 200) {
+//     final Map<String, dynamic> data = json.decode(response.body);
+//     // Check if data contains a 'data' key
+//     if (data['data'] != null) {
+//       final List<dynamic> koiList = data['data'];
+//       return koiList.map((json) => DaftarKoiModel.fromJson(json)).toList();
+//     } else {
+//       throw Exception('No koi data found');
+//     }
+//   } else {
+//     throw Exception('Failed to load koi list');
+//   }
+// }
+
+
+
 Future<List<JenisKoi>> fetchJenisKoiList() async {
   final response = await http.get(Uri.parse('$baseUrl/api/v1/jenis-koi'));
 
@@ -121,4 +168,21 @@ Future<List<JenisKoi>> fetchJenisKoiList() async {
       throw Exception('Gagal memuat jumlah koi: $e');
     }
   }
+
+  Future<int> fetchKoiCountId(String pondId) async {
+  try {
+    final response = await http.get(Uri.parse('$baseUrl/api/v1/koi/ponds?pondId=$pondId'));
+    
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body); // Parsing JSON
+      var koiData = jsonData['data']; // Ambil array 'data'
+      return koiData.length; // Menghitung jumlah koi
+    } else {
+      throw Exception('Failed to load koi count');
+    }
+  } catch (e) {
+    throw Exception('Failed to load koi count: $e');
+  }
+}
+
 }

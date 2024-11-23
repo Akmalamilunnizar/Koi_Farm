@@ -85,8 +85,7 @@ class _DetailKoiState extends State<DetailKoi> {
                       ),
                       SizedBox(height: Dimensions.height15),
                       GestureDetector(
-                        onTap: () {
-                        },
+                        onTap: () {},
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 0),
                           decoration: BoxDecoration(
@@ -114,17 +113,17 @@ class _DetailKoiState extends State<DetailKoi> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 100,
-                                      height: 100,
+                                      width: 80,
+                                      height: 160,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         image: DecorationImage(
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
-                    "http://127.0.0.1:8000" +
-                        '/uploads/' +
-                        koi.img!, // Access img from each PondModel
-                  ),
+                                            "http://127.0.0.1:8000" +
+                                                '/storage/' +
+                                                koi.img!, // Access img from each PondModel
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -226,11 +225,10 @@ class _DetailKoiState extends State<DetailKoi> {
                                                 //         CrossAxisAlignment
                                                 //             .center,
                                                 //     children: [
-                                                      
+
                                                 //     ],
                                                 //   ),
                                                 // ),
-                                                
                                               ],
                                             ),
                                           ),
@@ -270,21 +268,19 @@ class _DetailKoiState extends State<DetailKoi> {
                                 // ],
                               ),
                               Text(
-                                                        "Keterangan",
-                                                        style: TextStyle(
-                                                          color: Colors.orange,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        '${koi.description}',
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                      ),
+                                "Keterangan",
+                                style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                '${koi.description}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
                               // _growth(),
                             ],
                           ),
